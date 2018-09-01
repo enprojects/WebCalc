@@ -28,9 +28,7 @@ namespace WebCalc.Services
             {
                  
                 if (ExpressionValidation(expression))
-                {
-
-
+                {                    
                     var tokens = expression.ToCharArray();
 
                     for (int i = 0; i < tokens.Length; i++)
@@ -62,7 +60,6 @@ namespace WebCalc.Services
                                 }
                                 else
                                     opsStack.Push(tokens[i]);
-
                             }
                         }
                     }
