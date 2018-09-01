@@ -12,23 +12,32 @@ namespace WebCalc.Models
     {
 
         private readonly IConfiguration _config;
-        private readonly string _expiredInMunute;
-        private DateTime dateTime; 
+        private readonly int _expiredInMunute;
+        
+        private DateTime expressionDate;
+    
 
         private Dictionary<string, object> dic = new Dictionary<string, object>();
 
         public CacheManager(IConfiguration config)
         {
             _config = config;
-            _expiredInMunute = _config.GetSection("cache:expiredInMinute").Value;
+            _expiredInMunute = int.Parse(_config.GetSection("cache:expiredInMinute").Value);
         }
 
         public T Get<T>(string key , Func<T> func )
         {
             if (!dic.ContainsKey(key))
             {
+                expressionDate = DateTime.Now.AddSeconds(_expiredInMunute);
                 Insert<T>(key, func());
-               
+            }
+            else
+            {
+                if (expressionDate.Minute >= DateTime.Now.Minute)
+                {
+                    Insert<T>(key, func());
+                }
             }
              
             return (T)dic[key];
