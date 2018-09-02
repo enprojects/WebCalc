@@ -29,14 +29,14 @@ namespace WebCalc.Models
         {
             if (!dic.ContainsKey(key))
             {
-                expressionDate = DateTime.Now.AddSeconds(_expiredInMunute);
+                expressionDate = DateTime.Now.Minute(_expiredInMunute);
                 Insert<T>(key, func());
             }
             else
             {
                 if (expressionDate.Minute >= DateTime.Now.Minute)
                 {
-                    Insert<T>(key, func());
+                    dic[key] = func();
                 }
             }
              
