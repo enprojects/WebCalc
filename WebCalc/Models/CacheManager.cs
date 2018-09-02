@@ -29,7 +29,7 @@ namespace WebCalc.Models
         {
             if (!dic.ContainsKey(key))
             {
-                expressionDate = DateTime.Now.Minute(_expiredInMunute);
+                expressionDate = DateTime.Now.AddMinutes(_expiredInMunute);
                 Insert<T>(key, func());
             }
             else
