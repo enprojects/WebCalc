@@ -70,23 +70,12 @@ namespace WebCalc.Services
 
                         res = Calculate(valuesStack, opsStack.Pop());
                         valuesStack.Push(res);
-                        //if (valuesStack.Count > 1)
-                        //{
-                        //    res = Calculate(valuesStack, opsStack.Pop());
-                        //    valuesStack.Push(res);
-                        //}
-                        //else
-                        //{
-                        //    var op = opsStack.Pop();
-                        //    if (op == '-' || op == '+')
-                        //        return decimal.Parse(op.ToString() + valuesStack.Pop());
-                        //}
+   
                     }
 
                     return valuesStack.Pop();
                 }
                 return null;
-
             });
         }
 
@@ -96,20 +85,6 @@ namespace WebCalc.Services
         {
             if (string.IsNullOrEmpty(expression))
                 return false;
-
-            //var expressionChars = expression.ToCharArray();
-
-
-            ////expression must start && end with number
-            //if (IsNumber(expression.First())  && IsNumber(expression.Last()))
-            //{
-            //    for (int i = 0; i < length; i++)
-            //    {
-
-            //    }
-            //}
-
-
 
             return true;
         }
