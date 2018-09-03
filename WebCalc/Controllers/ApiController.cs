@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebCalc.Interfaces;
 using WebCalc.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebCalc.Controllers
 {
@@ -21,7 +20,7 @@ namespace WebCalc.Controllers
         {
             _serv = serv;
         }
-
+        
 
         [HttpPost("calculate")]
         public IActionResult CalcResult([FromBody]CalculatorRequest request)
@@ -30,7 +29,7 @@ namespace WebCalc.Controllers
 
             return Json(new
             {
-                result = result
+                result = result != null ?  result.ToString() : "Invalid expression",
             });
         }
     }

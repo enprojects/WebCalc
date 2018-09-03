@@ -22,6 +22,6 @@ namespace WebCalc.Controllers
         {
             return View();
         }
-
+         
     }
 }

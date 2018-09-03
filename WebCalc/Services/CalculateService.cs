@@ -22,58 +22,62 @@ namespace WebCalc.Services
             var opsStack = new Stack<char>();
             var valuesStack = new Stack<decimal>();
             expression = expression.Trim();
-
-
+            
             return _cache.Get<decimal?>(expression, () =>
             {
                  
                 if (ExpressionValidation(expression))
-                {                    
-                    var tokens = expression.ToCharArray();
-
-                    for (int i = 0; i < tokens.Length; i++)
+                {
+                    try
                     {
-                        StringBuilder sb = new StringBuilder();
+                        var tokens = expression.ToCharArray();
 
-                        if (tokens[i] >= '0' && tokens[i] <= '9')
+                        for (int i = 0; i < tokens.Length; i++)
                         {
-                            while (tokens.Length > i && IsNumber(tokens[i]))
-                                sb.Append(tokens[i++]);
+                            StringBuilder sb = new StringBuilder();
 
-                            valuesStack.Push(decimal.Parse(sb.ToString()));
-                        }
-
-                        if (tokens.Length > i && (tokens[i] == '+' || tokens[i] == '-' ||
-                               tokens[i] == '*' || tokens[i] == '/'))
-                        {
-                            if (opsStack.Count == 0)
+                            if (tokens[i] >= '0' && tokens[i] <= '9')
                             {
-                                opsStack.Push(tokens[i]);
+                               
+                                while (tokens.Length > i && IsNumber(tokens[i]))
+                                    sb.Append(tokens[i++]);
+
+                                valuesStack.Push(decimal.Parse(sb.ToString()));
                             }
-                            else
+
+                            if (tokens.Length > i && (tokens[i] == '+' || tokens[i] == '-' ||
+                                   tokens[i] == '*' || tokens[i] == '/'))
                             {
-                                if (Operatorprecedence(opsStack.Peek()) >= Operatorprecedence(tokens[i]))
+                                if (opsStack.Count == 0)
                                 {
-                                    var result = Calculate(valuesStack, opsStack.Pop());
-                                    valuesStack.Push(result);
                                     opsStack.Push(tokens[i]);
                                 }
                                 else
-                                    opsStack.Push(tokens[i]);
+                                {
+                                    if (OperatorPrecedence(opsStack.Peek()) >= OperatorPrecedence(tokens[i]))
+                                    {
+                                        var result = Calculate(valuesStack, opsStack.Pop());
+                                        valuesStack.Push(result);
+                                        opsStack.Push(tokens[i]);
+                                    }
+                                    else
+                                        opsStack.Push(tokens[i]);
+                                }
                             }
                         }
+                        
+                        while (opsStack.Count > 0)
+                        {
+                            res = Calculate(valuesStack, opsStack.Pop());
+                            valuesStack.Push(res);
+                        }
+
+                        return valuesStack.Pop();
                     }
-                    
+                    catch {
 
-                    while (opsStack.Count > 0)
-                    {
-
-                        res = Calculate(valuesStack, opsStack.Pop());
-                        valuesStack.Push(res);
-   
+                        return null;
                     }
-
-                    return valuesStack.Pop();
                 }
                 return null;
             });
@@ -96,7 +100,7 @@ namespace WebCalc.Services
 
             return false;
         }
-        private int Operatorprecedence(char op)
+        private int OperatorPrecedence(char op)
         {
             var precedence = 0;
 
@@ -116,9 +120,8 @@ namespace WebCalc.Services
             return precedence;
 
         }
-        private decimal Calculate(Stack<decimal> valuesStack, char op)
+        private decimal Calculate(Stack<decimal> valuesStack, char op)    
         {
-
             decimal val2 = valuesStack.Pop();
             decimal val1 = valuesStack.Pop();
 
@@ -136,7 +139,7 @@ namespace WebCalc.Services
                     result = val1 * val2;
                     break;
                 case '/':
-                    result = val1 / val2;
+                        result = val1 / val2;
                     break;
 
             }
