@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebCalc.Interfaces;
-using WebCalc.Models;
+using Core.Interfaces;
+using Core.Models;
 
-namespace WebCalc.Controllers
+namespace Core.Controllers
 {
     public class HomeController : Controller
     {

@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebCalc.Interfaces;
+using Core.Interfaces;
 
-namespace WebCalc.Models
+namespace Core.Models
 {
     public class CacheManager : ICacheManager
     {

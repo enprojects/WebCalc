@@ -7,11 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Neleus.DependencyInjection.Extensions;
-using WebCalc.Interfaces;
-using WebCalc.Models;
-using WebCalc.Services;
 
-namespace WebCalc
+using Core.Models;
+using Core.Services;
+using Core.Interfaces;
+
+namespace Core
 {
     public class Startup
     {
