@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Neleus.DependencyInjection.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,13 @@ namespace WebCalc.Services
     public class CalculateService : ICalculateService
     {
         private readonly ICacheManager _cache;
+        private readonly IServiceByNameFactory<IOperator> _factory;
+       
 
-        public CalculateService(ICacheManager cache)
+        public CalculateService(ICacheManager cache, IServiceByNameFactory<IOperator> factory)
         {
             _cache = cache;
+            _factory = factory;
         }
 
         public decimal? Evaluate(string expression)
@@ -102,22 +106,25 @@ namespace WebCalc.Services
         }
         private int OperatorPrecedence(char op)
         {
-            var precedence = 0;
 
-            switch (op)
-            {
-                case '+':
-                case '-':
-                    break;
+            var operatorService = _factory.GetByName(op.ToString());
+            return operatorService.Precedence;
+            //var precedence = 0;
 
-                case '*':
-                case '/':
-                    precedence = 1;
-                    break;
+            //switch (op)
+            //{
+            //    case '+':
+            //    case '-':
+            //        break;
 
-            }
+            //    case '*':
+            //    case '/':
+            //        precedence = 1;
+            //        break;
 
-            return precedence;
+            //}
+
+            //return precedence;
 
         }
         private decimal Calculate(Stack<decimal> valuesStack, char op)    
@@ -125,24 +132,27 @@ namespace WebCalc.Services
             decimal val2 = valuesStack.Pop();
             decimal val1 = valuesStack.Pop();
 
-            var result = 0M;
+            var operatorService = _factory.GetByName(op.ToString());
+            var result =   operatorService.Calculate<decimal>(val1, val2);
 
-            switch (op)
-            {
-                case '+':
-                    result = val1 + val2;
-                    break;
-                case '-':
-                    result = val1 - val2;
-                    break;
-                case '*':
-                    result = val1 * val2;
-                    break;
-                case '/':
-                        result = val1 / val2;
-                    break;
+            //var result = 0M;
 
-            }
+            //switch (op)
+            //{
+            //    case '+':
+            //        result = val1 + val2;
+            //        break;
+            //    case '-':
+            //        result = val1 - val2;
+            //        break;
+            //    case '*':
+            //        result = val1 * val2;
+            //        break;
+            //    case '/':
+            //        result = val1 / val2;
+            //        break;
+
+            //}
             return result;
         }
 

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Neleus.DependencyInjection.Extensions;
 using WebCalc.Interfaces;
 using WebCalc.Models;
 using WebCalc.Services;
@@ -24,8 +25,26 @@ namespace WebCalc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-       
+
             services.AddMvc();
+
+
+
+            services.AddScoped<PlusOperator>();
+            services.AddScoped<MinusOperator>();
+            services.AddScoped<DivideOperator>();
+            services.AddScoped<MultiOperator>();
+
+            services.AddByName<IOperator>()
+
+                .Add<PlusOperator>("+")
+               .Add<MinusOperator>("-")
+                .Add<DivideOperator>("/")
+               .Add<MultiOperator>("*")
+
+               .Build();
+
+
             services.AddSingleton<ICacheManager, CacheManager>();
             services.AddScoped<ICalculateService, CalculateService>();
         }
@@ -33,7 +52,7 @@ namespace WebCalc
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
+
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
