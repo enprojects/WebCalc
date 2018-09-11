@@ -39,7 +39,7 @@ namespace Core.Services
 
                             if (tokens[i] >= '0' && tokens[i] <= '9')
                             {
-                               
+                                 
                                 while (tokens.Length > i && IsNumber(tokens[i]))
                                     sb.Append(tokens[i++]);
 
@@ -49,6 +49,9 @@ namespace Core.Services
                             if (tokens.Length > i && (tokens[i] == '+' || tokens[i] == '-' ||
                                    tokens[i] == '*' || tokens[i] == '/'))
                             {
+
+
+                               
                                 if (opsStack.Count == 0)
                                 {
                                     opsStack.Push(tokens[i]);

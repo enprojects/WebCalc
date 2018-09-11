@@ -38,9 +38,9 @@ namespace Core
 
             services.AddByName<IOperator>()
 
-                .Add<PlusOperator>("+")
+               .Add<PlusOperator>("+")
                .Add<MinusOperator>("-")
-                .Add<DivideOperator>("/")
+               .Add<DivideOperator>("/")
                .Add<MultiOperator>("*")
 
                .Build();
